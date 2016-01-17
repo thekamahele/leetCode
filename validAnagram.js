@@ -20,11 +20,7 @@ var isAnagram = function(s, t) {
 	function looper(string) {
 		var lettersHash = {};
 		for(var i = 0; i < string.length; i++) {
-			if(!lettersHash[string[i]]) {
-				lettersHash[string[i]] = 1;
-			} else {
-				lettersHash[string[i]]++;
-			}
+			lettersHash[string[i]] ? lettersHash[string[i]]++ : lettersHash[string[i]] = 1
 		}
 		return lettersHash;
 	}
