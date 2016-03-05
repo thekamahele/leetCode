@@ -8,8 +8,8 @@
  * @constructor
  */
 var Queue = function() {
-	this.length = 0;
-	this.storage = [];
+	this.inbox = [];
+	this.outbox = [];
 };
 
 /**
@@ -17,30 +17,43 @@ var Queue = function() {
  * @returns {void}
  */
 Queue.prototype.push = function(x) {
-	this.storage[this.length] = x
-	this.length++
-
+	this.inbox.push(x)
 };
 
 /**
  * @returns {void}
  */
 Queue.prototype.pop = function() {
-	var poppedVal = this.storage.splice(0,1)
-	this.length--
-	return poppedVal;
+	if(this.outbox.length > 0) {
+		return this.outbox.pop()
+	} else {
+		while(this.inbox.length > 0) {
+			this.outbox.push(this.inbox.pop())
+		}
+		return this.outbox.pop()
+	}
+
 };
 
 /**
  * @returns {number}
  */
 Queue.prototype.peek = function() {
-	return this.storage[0]
+	if(this.outbox.length > 0) {
+		return this.outbox[this.outbox.length - 1]
+	} else {
+		return this.inbox[0]
+	}
 };
 
 /**
  * @returns {boolean}
  */
 Queue.prototype.empty = function() {
-	return this.length > 0 ? false : true
+	if(this.outbox.length > 0 || this.inbox.length > 0) {
+		return false
+	} else {
+		return true
+	}
+
 };
